@@ -27,3 +27,21 @@ dtaa_long.subset <-data_long[c(1:25),]
 # Assuming data_long is your data frame with the FPKM column
 data_long <- data_long %>%
   mutate(status = ifelse(FPKM > 5, "positive", "negative"))
+
+#ggplot(dtaa_long.subset,aes(x = Gene,y=FPKM))+geom_col()
+
+#TP53,KRAS filter geen
+data_long %>%
+  filter(Gene == 'TP53') %>%
+  ggplot(.,aes(x=samples,y=FPKM,fill = status))+geom_col()
+
+  
+
+filter_data <- data_long %>%
+                 filter(Gene %in% c('TP53', 'KRAS', 'SMAD4'))   # Add more gene names here
+#bar plot                 
+filter_data %>%
+  slice(1:30) %>%  # Select the first 30 rows
+  ggplot(aes(x = Gene, y = FPKM, fill = status)) +
+  geom_col() +
+  theme_minimal()  # Optional: for a cleaner look
