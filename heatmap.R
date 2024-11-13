@@ -1,4 +1,12 @@
+#if (!requireNamespace("BiocManager", quietly=TRUE))
+   #install.packages("BiocManager")
+#BiocManager::install("InteractiveComplexHeatmap")
+
+
+library(tidyverse)
+library(dplyr)
 library(ComplexHeatmap)
+#library(InteractiveComplexHeatmap)
 library(circlize)
 # Select a data file
 filename <-'/home/damian/Desktop/R/newtest/sample.txt'
@@ -6,7 +14,7 @@ filename <-'/home/damian/Desktop/R/newtest/sample.txt'
 # Read the data into a data.frame
 my_data <- read.table(filename, sep="\t", quote="", stringsAsFactors=FALSE,header=TRUE,row.names=1)
 
-head(my_data)
+myhead(my_data)
 
 dim(my_data) # (rows columns)
 
@@ -62,15 +70,25 @@ range(my_matrix, na.rm = TRUE)
 
 # Define the new color function based on the actual range of data
 # Assuming the range from the above check is [0, 10], you can modify it like this:
-col_fun = colorRamp2(c(0, 5, 10), c("green", "black", "red"))
+col_fun = colorRamp2(c(0, 5, 10), c("white", "blue", "red"))
 
 # Create the heatmap with the adjusted color scale
-Heatmap(my_matrix, 
-        name = 'Sample2',
-        cluster_columns=TRUE,
-        col = col_fun, 
-        row_names_side = "left", 
-        show_row_dend = TRUE,
-        show_column_names = TRUE,
-        row_names_gp=gpar(cex=fontsize),
-        row_dend_width = unit(3, "cm"))
+ht = Heatmap(my_matrix, 
+            name = 'Sample2',
+            cluster_columns=TRUE,
+            col = col_fun, 
+            row_names_side = "left", 
+            show_row_dend = TRUE,
+            show_column_names = TRUE,
+            row_names_gp=gpar(cex=fontsize),
+            row_dend_width = unit(3, "cm"))
+
+ht = draw(ht) # not necessary, but recommended
+
+
+my_data %>%
+  filter(gene)
+
+
+
+
